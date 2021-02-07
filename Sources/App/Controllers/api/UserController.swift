@@ -8,6 +8,8 @@ struct UserController: RouteCollection {
         
         routes.grouped("api").grouped("users")
             .post("signin", use: create)
+        routes.grouped("api").grouped("users")
+            .get("confirm", use: confirmed)
         
         let usersLogin = routes.grouped("api").grouped("users")
             .grouped(UserModel.authenticator())
@@ -126,7 +128,7 @@ struct UserController: RouteCollection {
         return saved.futureResult
     }
     
-    fileprivate func saveFile (req: Request, user: UserModel, data: Data, completionHandler: @escaping (String?) -> Void )  {
+    fileprivate func saveFile (req: Request, user: UserModel, data: Data, completionHandler: @escaping (String?) -> Void ) {
         
         let path = req.application.directory.publicDirectory + "images/avatars/\(user.id!).jpg"
         try? FileManager.default.removeItem(atPath: path)
@@ -141,24 +143,45 @@ struct UserController: RouteCollection {
         }
     }
     
-    
-    
-    fileprivate func create(req: Request) throws -> EventLoopFuture<UserModel.OutputLogin> {
+    fileprivate func create(req: Request) throws -> EventLoopFuture<HTTPStatus> {
         
         guard let data = req.body.data,
               let userSignup = try? JSONDecoder().decode(UserSignup.self, from: data)
         else { throw Abort (.badRequest) }
         
-        //try UserSignup.validate(content: req)
-        
-        guard
-            let user = try? UserModel.create(from: userSignup)
+        guard let user = try? UserModel.create(from: userSignup)
         else { throw Abort (.badRequest) }
         
-        return user.save(on: req.db).flatMapThrowing {
-            return try UserModel.OutputLogin(user, req: req)
-        }
+        return user.save(on: req.db).map({
+            MailManager.send(req.application, name: user.username, to: user.email,
+                             subject: "confirm your account", text: "confirm your account here \n \(K.external_address):\(K.server_port)/api/users/confirm?key=\(user.id!.uuidString)")
+        }).transform(to: .ok)
 
+    }
+    
+    fileprivate func confirmed ( req: Request ) throws -> EventLoopFuture<View> {
+        
+        struct Input: Codable {
+            var key: String
+        }
+        
+        guard
+            let data = try? req.query.decode(Input.self),
+            let id = UUID(uuidString: data.key)
+        else { throw Abort (.badRequest) }
+        
+        return UserModel.query(on: req.db)
+            .filter(\.$id==id)
+            .filter(\.$confirmed==false)
+            .first()
+            .unwrap(or: Abort(.unauthorized))
+            .flatMap({
+                $0.confirmed = true
+                return $0.update(on: req.db).flatMap({
+                    return req.view.render("ok")
+                })
+            })
+        
     }
     
 }

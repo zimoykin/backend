@@ -21,14 +21,24 @@ struct MessageController: RouteCollection {
             var itemid: String
         }
         
+        guard let user = req.auth.get(UserModel.self)
+        else { throw Abort(.unauthorized) }
+        
         guard let data = try? req.query.decode(input.self),
               let itemid = UUID (uuidString: data.itemid)
         else { throw Abort (.badRequest) }
         
         return MessageModel.query(on: req.db)
             .group(.or) { or in
-                or.filter(\.$blog.$id == itemid)
-                or.filter(\.$toUser.$id == itemid)
+                //direct
+                or.group(.and) { and in
+                    and.filter(\.$user.$id == user.id!)
+                    and.filter(\.$toUser.$id == itemid)
+                }
+                //comment
+                or.group(.and) { and in
+                    and.filter(\.$blog.$id == itemid)
+                }
             }
             .with(\.$user)
             .with(\.$blog)

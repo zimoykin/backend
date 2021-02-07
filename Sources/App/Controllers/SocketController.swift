@@ -74,7 +74,6 @@ public struct SocketClient: Hashable {
                     //.filter( {$0 != self })
                     .map { $0.user } ) {
             if let data = String(bytes: decoded, encoding: .utf8) {
-                print(data)
                 _ = self.app.sockets.clients
                     //.filter( {$0 != self })
                     .map ({

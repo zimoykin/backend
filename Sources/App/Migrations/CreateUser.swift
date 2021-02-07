@@ -8,11 +8,13 @@ struct CreateUser: Migration {
             .unique(on: "username")
             .field("password_hash",  .string, .required)
             .field("email",          .string, .required)
+            .field("confirmed",      .bool)
             .field("created_at",     .datetime)
             .field("updated_at",     .datetime)
             .create().flatMap {
-                try! UserModel.create(from: UserSignup(username: "admin", email: "admin@goverment.com", password: "@dmin"))
-                    .save(on: database)
+                let admin = try! UserModel.create(from: UserSignup(username: "admin", email: "admin@goverment.com", password: "@dmin"))
+                admin.confirmed = true
+                return admin.save(on: database)
             }
     }
 

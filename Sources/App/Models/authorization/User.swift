@@ -30,8 +30,7 @@
             self.refreshToken = try user.createToken(req.application, isAccess: false)
             self.image = user.getSourceImage()
             
-            let ref = RefreshToken(user.id!, token: self.refreshToken).save(on: req.db)
-            debugPrint(ref)
+            _ = RefreshToken(user.id!, token: self.refreshToken).save(on: req.db)
             
         }
     }
@@ -67,6 +66,9 @@
     @Field(key: "email")
     var email: String
     
+    @Field(key: "confirmed")
+    var confirmed: Bool
+    
     @Timestamp(key: "created_at", on: .create)
     var createdAt: Date?
     
@@ -83,6 +85,7 @@
         self.username = username
         self.passwordHash = passwordHash
         self.email = email
+        self.confirmed = false
     }
   }
   
@@ -125,7 +128,7 @@
     static let passwordHashKey = \UserModel.$passwordHash
     
     func verify(password: String) throws -> Bool {
-        try Bcrypt.verify(password, created: self.passwordHash)
+        try (self.confirmed && Bcrypt.verify(password, created: self.passwordHash))
     }
     
   }
