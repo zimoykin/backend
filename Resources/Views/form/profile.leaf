@@ -1,0 +1,17 @@
+#extend("index"):
+#export("body"):
+
+    <body onload="loadPage()">
+
+        <div class="article">
+        
+            <div class="imageSelector" id="imageselect">
+                <input type="file" name="image" required>
+            </div>
+            
+        </div>
+
+    </body>
+
+#endexport
+#endextend

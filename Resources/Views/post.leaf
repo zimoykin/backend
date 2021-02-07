@@ -1,0 +1,83 @@
+#extend("index"):
+#export("body"):
+
+    <body onload="loadPage()">
+    
+        <div class="container mt-5 pt-5">
+            <table>
+                #for(cont in content):
+                <tr> <td>
+                    <div class="row pb-1 pb-5">
+                        
+                        <div class="col">
+                            <div class="imageArticle">
+                                <img src = #(cont.url_image)>  </img>
+                            </div>
+                            
+                            <div class="buttons">
+                                <form method="get" action=/Post/upd/#(cont.id)>
+                                    <input type="image" value="update" src=#editImage() alt="Submit">
+                                        </form>
+                                <form method="post" action=/Post/del/#(cont.id)>
+                                    <input type="image" value="delete" src=#delImage() alt="Submit">
+                                </form>
+                            </div>
+                            
+                            
+                        </div>
+                        
+                        <div class="col-6">
+                            
+                            <div class="post pb-3">
+                                <a href=/Post/#(cont.id)>
+                                    <div class="d14 text-uppercase">
+                                        <p> #(cont.title) </p>
+                                    </div>
+                                </a>
+                                <p class="text-justify"><small> #(cont.description) </small></p>
+                                <div class="tags">
+                                    #for(tags in cont.Tags):
+                                    <form action=/Search/Tag/#(tags)>
+                                        <input type="submit" value=##(tags)>
+                                    </form>
+                                    #endfor
+                                    <br>
+                                    #for(loc in cont.Locations):
+                                    <form action="/Search/Location/#(loc)">
+                                        <input type="submit" value="#(loc)">
+                                    </form>
+                                    #endfor
+                                </div>
+                            </div>
+
+                            
+
+                        </div>
+                        
+                        <div class="col">
+                            <div class="pt-3">
+                                <form method="post" action=/bids/#(cont.id)>
+                                        
+                                            <span class="input-group-text w-100 p-1 justify-content-center text-center">$ last bid: </span>
+                                            <textarea class="w-100 p-1 justify-content-center text-center" id="bid" name="bid" onkeypress="validate(event)">#(lastBids)</textarea>
+                                            <input type="submit" class="btn btn-success w-100" value="add">
+                                            
+                                </form>
+                                <p>#(bidOwner)</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    </div>
+        
+        </div>
+        </tr></td>
+        #endfor
+        </table>
+        </div>
+        
+    </body>
+    </html>
+    
+    #endexport
+    #endextend

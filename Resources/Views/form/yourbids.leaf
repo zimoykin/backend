@@ -1,0 +1,72 @@
+#extend("index"):
+#export("body"):
+
+<body onload="loadPage()">
+    
+    <div class="container mt-5 pt-5 mb-5 pb-5">
+        #for(cont in content):
+        <div class="row p-1 m-3">
+            
+            <div class="col">
+                
+                <div class="imageArticle">
+                    <img src = #(cont.url_image)>  </img>
+                </div>
+                
+            </div>
+            
+            <div class="col-6">
+                <div class="row">
+                    <div class="post w-100 ml-3 mr-3">
+                        <a href=/Post/#(cont.post.id)>
+                            <div class="d14 text-uppercase">
+                                <p> #(cont.post.title) </p>
+                            </div>
+                        </a>
+                        
+                        #if(cont.bid.isItYours):
+                        <div class="bg-light text-success p-3 w-100">
+                            <p class="text-justify">
+                            <small> #(cont.bid.bid) </small>
+                            </p>
+                            <p class="text-justify">
+                            <small> this is yours bid! </small>
+                            </p>
+                        </div>
+                        #else:
+                        <div class="bg-dark text-light p-3 w-100">
+                            <p class="text-justify">
+                            <small> #(cont.bid.bid) </small>
+                            </p>
+                            <p class="text-justify">
+                            <small> Not yours bid! </small>
+                            </p>
+                        </div>
+                        
+                        #endif
+                        
+                        <div class="tags">
+                            #for(tags in cont.tags):
+                            <form action=/Search/Tag/#(tags)>
+                                <input type="submit" value=##(tags.title)>
+                                    </form>
+                            #endfor
+                            <br>
+                        </div>
+                    </div>
+                </div>
+                
+                
+                
+            </div>
+            
+            <div class="col"> </div>
+        </div>
+        #endfor
+        
+    </div>
+    
+</body>
+
+#endexport
+#endextend

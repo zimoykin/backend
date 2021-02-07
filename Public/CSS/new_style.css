@@ -1,0 +1,213 @@
+@import 'https://fonts.googleapis.com/css?family=Merriweather';
+
+.openMenuButton {
+    z-index: 1;
+    position: fixed;
+    font-size: 33px;
+    top: 0;
+    left: 0;
+    padding: 10px;
+    width: 100%;
+    font-weight: lighter;
+    background-color: seagreen;
+    cursor: pointer;
+    color: blanchedalmond;
+}
+header nav {
+    margin-bottom: 16px;
+    color: blanchedalmond;
+}
+
+.menu {
+    top: 0;
+    height: 100%;
+    width: 0;
+    position: fixed;
+    left: 0;
+    overflow-x: hidden;
+    transition: 0.5s;
+    opacity: 0.9;
+    z-index: 5;
+    cursor: pointer;
+    color: blanchedalmond;
+    font-weight: lighter;
+}
+.menu h1,h2,h3,h4,h5 {
+    font-weight: lighter;
+}
+.loginform h1,h2,h3,h4,h5 {
+    font-weight: lighter;
+}
+
+.menuitem {
+    text-align: right;
+    font-weight: lighter;
+    width: 75%;
+    padding: 2px;
+    margin: 5px;
+    color: black;
+    cursor: pointer;
+}
+.menuitem:hover {
+    background-color: lemonchiffon;
+    cursor: pointer;
+}
+
+.loginform {
+   top: 0;
+   height: 100%;
+   width: 0;
+   position: fixed;
+   right: 0;
+   overflow-x: hidden;
+   transition: 0.5s;
+   opacity: 0.8;
+   z-index: 5;
+   color: blanchedalmond;
+   cursor: pointer;
+}
+
+.loginButton {
+     cursor: pointer;
+     text-align: right;
+     width: 290px;
+     font-size: xx-large;
+     padding: 10px;
+     color: blanchedalmond;
+}
+
+.rightHeaderTitle {
+    z-index: 3;
+    position: fixed;
+    font-size: 33px;
+    top: 0;
+    right: 0;
+    padding: 10px;
+    text-align: right;
+    background-color: seagreen;
+    font-weight: lighter;
+    cursor: pointer;
+    color: blanchedalmond;
+}
+
+.centerHeaderTitle {
+    z-index: 1;
+    position: fixed;
+    font-size: 33px;
+    top: 0;
+    padding: 10px;
+    width: 100%;
+    opacity: 0;
+    font-weight: lighter;
+    background-color: seagreen;
+    color: blanchedalmond;
+    
+}
+
+.custom h1 {
+    font-size: 48px;
+    line-height: 0.6em;
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+    word-spacing: -5px;
+    z-index: 2;
+    position: fixed;
+    padding-top: 10px;
+    color: blanchedalmond;
+}
+
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+.buttons input{
+    
+    width: 5vh;
+    height: 5vh;
+    border: 0;
+    padding: 10px;
+}
+
+.buttons input:hover {
+    background-color: blanchedalmond;
+}
+ 
+.imageArticle img {
+   width:300px;
+   height:300px;
+   object-fit:cover;
+   border-radius:50%;
+}
+
+.post{
+    
+}
+
+
+
+.tags {
+    display: flex;
+}
+
+.tags input {
+    width: 100%;
+    height: 100%;
+    border-radius: 10%;
+    border: 0;
+    cursor: pointer;
+}
+
+.tag {
+    background-color: lightgrey;
+    color: darkgreen;
+    cursor: pointer;
+    margin: 1px;
+    border-radius:10px;
+    padding: 0px;
+    border: 0;
+}
+
+.d14 {
+  text-align: center;
+  background-color: blanchedalmond;
+}
+
+.d14 p {
+  display: table;
+  width: auto;
+  margin: 15px auto;
+  letter-spacing: 2px;
+  color: seagreen;
+  background-color: blanchedalmond;
+}
+.d14 p:before {
+        content: "";
+        position: absolute;
+        top: 0.5em;
+        left: 0.5em;
+        width: 30px;
+        height: 20px;
+        border-top: 2px solid seagreen;
+        border-left: 2px solid seagreen;
+}
+.d14 p:after {
+        content: "";
+        position: absolute;
+        top: 1.7em;
+        width: 30px;
+        height: 20px;
+        right: 0.5em;
+        border-bottom: 2px solid seagreen;
+        border-right: 2px solid seagreen;
+}
+
+.ava {
+    width: 450px;
+    height: 450px;
+    border-radius: 50%;
+   
+    background-size: contain;
+    transition: 0.5s;
+}

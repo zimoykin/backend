@@ -1,0 +1,52 @@
+#extend("index"):
+#export("body"):
+
+<body onload="loadPage()">
+    
+    <div class="container mt-3 pt-3">
+        <table class="pb-1 mb-3">
+            #for(cont in content):
+            <tr> <td>
+                <div class="row p-5">
+                    <div class="col">
+                        <div class="imageArticle">
+                            <img src = #(cont.url_image)>  </img>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        
+                        <a href=/Post/#(cont.id)>
+                            <div class="d14 text-uppercase">
+                                <p> #(cont.title) </p>
+                            </div>
+                        </a>
+                        <p class="text-justify"><small> #(cont.description) </small></p>
+                        <div class="tags">
+                            #for(tags in cont.Tags):
+                            <form action=/Search/Tag/#(tags)>
+                                <input type="submit" value=##(tags)>
+                                    </form>
+                            #endfor
+                            <br>
+                            #for(loc in cont.Locations):
+                            <form action="/Search/Location/#(loc)">
+                                <input type="submit" value="#(loc)">
+                                    </form>
+                            #endfor
+                        </div>
+                    </div>
+                    <div class="col"> </div>
+                </div>
+                
+                </tr></td>
+            #endfor
+            
+            
+        </table>
+    </div>
+    
+</body>
+
+
+#endexport
+#endextend

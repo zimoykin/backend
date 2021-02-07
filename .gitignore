@@ -1,0 +1,12 @@
+.env.*
+.env
+Packages
+.build
+xcuserdata
+*.xcodeproj
+DerivedData/
+.DS_Store
+db.sqlite
+.swiftpm
+Secret.swift
+ssmtp.config

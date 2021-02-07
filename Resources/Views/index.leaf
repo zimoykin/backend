@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+    <head>
+            
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+            <link rel="stylesheet" href="/css/new_style.css">
+            <script src="/javascript/index.js"></script>
+            <meta charset="utf-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                    <title>#(page.title)</title>
+                    <meta name="description" content="#(index.description)">
+                        </head>
+    <body>
+        
+        <div class="container">
+          <div class="row">
+            <div class="col">
+                <div class="menu bg-dark" id="menu">
+                    
+                    <div class="text-right text-uppercase p-3" id="closeButton" onclick="hideMenu()">
+                        <h1> × close </h1>
+                    </div>
+                    
+                    <div class="text-center text-uppercase p-3">
+                        <h1> #(index.menu.current_page)</h1>
+                    </div>
+                    
+                    <br>
+                    
+                    <div class="list-group bg-dark">
+                        #for(menu in index.menu.menuButton):
+                            #if(menu == index.menu.current_page):
+                                <div class="menuitem">
+                                    <a href=/#(menu) class="list-group-item list-group-item-action text-uppercase active"> #(menu) </a>
+                                </div>
+                            #else:
+                            <div class="menuitem">
+                                <a href=/#(menu) class="list-group-item list-group-item-action text-uppercase"> #(menu)</a>
+                            </div>
+                            #endif
+                        #endfor
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="d-flex justify-content-center">
+                <header class="custom">
+                 <h1 id="mainTitle">#(index.title)</h1>
+                </header>
+                </div>
+                
+                <div class="topContainer">
+                    <span id="menuButton" class="openMenuButton" onclick="openNav()">&#9776; MENU </span>
+                    <span id="titleOntop" class="rightHeaderTitle text-uppercase" onclick="loginTouched('#(image_src)')" > #(username) </span>
+                    
+                    <div class="d-flex justify-content-center">
+                    <header class="custom">
+                        <h1 id="centertitleOntop">#(index.menu.current_page)</h1>
+                    </header>
+                    </div>
+                    
+                </div>
+            </div>
+            <div class="col">
+                
+             <div class="loginform bg-dark" id="login">
+               
+                 <div class="text-right text-uppercase p-3" id="loginButton" onclick="loginTouched()">
+                     <h1> × close </h1>
+                 </div>
+                 
+                 
+                #if(username == "LOGIN"):
+                 <div class="card bg-dark">
+                     <div class="card-body">
+                         <form action="/login" method="POST">
+                             
+                             <div class="form-group">
+                                 <label for="login"> Username or email </label>
+                                 <input type="username" name="login" class="form-control" id="login" required />
+                             </div>
+                             
+                             <div class="form-group">
+                                 <label for="password"> Password </label>
+                                 <input type="password" name="password" class="form-control" id="password" required />
+                             </div>
+                             <hr>
+                             <div class="form-group">
+                                 <input type="submit" class="btn btn-success" value="login" />
+                             </div>
+                             
+                             <label> #(message) </label>
+                             
+                             
+                         </form>
+                     </div>
+                 </div>
+                 #else:
+                 <div class="card bg-dark">
+                     <div class="card-body">
+                         <form action="/Logout" method="POST">
+                             
+                             <div class="ava" id="ava">
+                                 
+                             </div>
+                             
+                             <div class="form-group">
+                                 <label> you: </label>
+                                 <br>
+                                 <label> #(username) </label>
+                             </div>
+                             
+                             <hr>
+                             
+                             <div class="form-group">
+                                 <input type="submit" class="btn btn-success" value="logout" />
+                             </div>
+                             
+                         </form>
+                     </div>
+                 </div>
+                 
+                 #endif
+                 
+             </div>
+                
+            </div>
+          </div>
+        
+                    
+                
+                
+            </div>
+            
+            <main>
+                #import("body")
+            </main>
+            <footer class="page-footer font-small pt-4 fixed-bottom">
+            <!-- Copyright -->
+            <div class="footer-copyright text-center py-3" id="footer">
+                #year() © #(footer.author)
+            </div>
+            <!-- Copyright -->
+            </footer>
+            
+            </body>
+</html>

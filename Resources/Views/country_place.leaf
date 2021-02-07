@@ -1,0 +1,83 @@
+#extend("index"):
+#export("body"):
+
+<body onload="loadPage()">
+    
+    
+    <div class="container mt-5 pt-5">
+        <div class="row mb-3 pb-5">
+            <div class="col">
+                
+            </div>
+            <div class="col-6 text-left text-uppercase w-100 bg-light">
+                <table>
+                    
+                    #if(title == "Countries"):
+                    #for(country in countries):
+                    <tr> <td>
+                        <a href=/Country/#(country.id)>
+                            <div class="text-dark w-100">
+                                <p> #(country.title) </p>
+                                <h5> #(country.description) </h5>
+                            </div>
+                        </a>
+                        <hr>
+                    </tr></td>
+                    #endfor
+                    <tr> <td>
+                        <a href=/Country/New> + new </a>
+                        </tr></td>
+                    #else:
+                    #for(place in places):
+                    <tr> <td>
+                        <a href=/Place/#(place.id)>
+                            <div class="text-dark w-100">
+                                <p> #(place.title) </p>
+                                <h5> #(place.description) </h5>
+                            </div>
+                        </a>
+                        <hr>
+                        </tr></td>
+                    #endfor
+                    <tr> <td>
+                        <a href=/Place/New> + new </a>
+                        <tr> <td>
+                            #endif
+                            <tr> <td>
+<!--                                #offsetPaginator()-->
+                                
+                                <nav aria-label="Page navigation example">
+                                  <ul class="pagination">
+                                    <li class="page-item">
+                                      <a class="page-link" href="#" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                      </a>
+                                    </li>
+                                    #for(page in pages):
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page=#(page)&per=10">
+                                            #(page)
+                                        </a>
+                                    </li>
+                                    #endfor
+                                    <li class="page-item">
+                                      <a class="page-link" href="#" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                      </a>
+                                    </li>
+                                  </ul>
+                                </nav>
+                                
+                                <tr> <td>
+                                    
+                                    </table>
+            </div>
+            <div class="col"></div>
+        </div>
+    </div>
+    
+</body>
+
+
+#endexport
+#endextend

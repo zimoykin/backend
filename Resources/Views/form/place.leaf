@@ -1,0 +1,61 @@
+
+#extend("index"):
+#export("body"):
+<body onload="loadPage()">
+    <div class="container pt-5 pb-5">
+        <div class="row pt-5 pb-5">
+            
+            <div class="col"> </div>
+            
+            <div class="col-6">
+                <form enctype="multipart/form-data" method="post">
+                    <label for="title">TITLE:</label>
+                    <br>
+                    <textarea rows="4" cols="50" id="title"  name="title" required>#(title)</textarea>
+                    <br>
+                    
+                    <label for="description">DESCRIPTION:</label>
+                    <br>
+                    <textarea rows="10" cols="50" id="tags"  name="description" required>#(description)</textarea>
+                    <br>
+                    
+                    <br>
+                    <input type="text" placeholder="Search.." id="Country" onkeyup="SearchBarByKey(Country)">
+                        <br>
+                        <label for="countryId">COUNTRY:</label>
+                        <br>
+                        <ul id="myUL">
+                            #for(country in countries):
+                            <li>
+                                <p class="w-100 btn btn-light" onclick="SelectedThisCountry('#(country.title)', '#(country.id)')">
+                                #(country.title)
+                                </p>
+                            </li>
+                            #endfor
+                        </ul>
+                    
+                        <label id="countryLabel" name="countryId"> </label>
+                        <input id="countryId" name="countryid" type="hidden" value=#(country.id)> </input>
+                    <br>
+                    
+                    <br>
+                    <a href=/Country/New> + Country </a>
+                    <br>
+                    
+                    <hr>
+                        <div class="article_button">
+                            <input type="Submit" value="SAVE">
+                        </div>
+                    </form>
+            </div>
+            
+            <div class="col">
+            </div>
+            
+            
+        </div>
+    </div>
+</body>
+
+#endexport
+#endextend

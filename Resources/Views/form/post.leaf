@@ -1,0 +1,71 @@
+
+#extend("index"):
+#export("body"):
+<body onload="loadPagePost('#(image_src)')">
+    <div class="containerb pt-5 pb-5 mb-5">
+        <form enctype="multipart/form-data" method="post"
+            
+            #if(post.title == ""):
+            action=/Post
+            #else:
+            action=/Post/#(post.id)
+            #endif
+            
+            >
+            
+            <div class="row">
+                
+                <div class="col"> </div>
+                
+                
+                <div class="col-6">
+                <label class="pt-3 w-100" for="title">TITLE:</label>
+                <br>
+                <textarea class=" p-2 w-100" rows="4" cols="50" id="title"  name="title" required>#(post.title)</textarea>
+                <br>
+                
+                <label for="description">DESCRIPTION:</label>
+                <br>
+                <textarea class="p-2 w-100"rows="10" cols="50" id="tags"  name="description" required>#(post.description)</textarea>
+                <br>
+                
+                <label for="tags">tags:</label>
+                <br>
+                <textarea class="w-100 p-2" rows="10" cols="50" id="tags" name="tags">#(tags)</textarea>
+                <br>
+                <br>
+                <label class="w-100 p-2" for="placeId">place:</label>
+                <br>
+                <select name="placeId" required>
+                    #for(place in location):
+                    <option value=#(place.id)>#(place.title)</option>
+                    #endfor
+                    <option selected value=#(post.place.id)>#(post.place.title)</option>
+                </select>
+                <br>
+                <a href=/Place/New> create new place </a>
+                <br>
+                <br>
+                #if(post.title == ""):
+                <div class="imageSelector" id="imageselect">
+                    <input type="file" name="image" required>
+                        </div>
+                #else:
+                <div class="imageSelector" id="imageselect">
+                    <input type="file" name="image">
+                        </div>
+                #endif
+                <hr>
+                <div class="article_button">
+                    <input type="submit" value="Submit">
+                        </div>
+            </div>
+            <div class="col"> </div>
+            </div>
+    </form>
+    
+    </div>
+</body>
+
+#endexport
+#endextend
