@@ -11,6 +11,7 @@ func routes(_ app: Application) throws {
     app.get("routes") { req in
         return app.routes.all.map { $0.description }
     }
+
     
     //api
     try app.register(collection: TodoController())
@@ -21,6 +22,7 @@ func routes(_ app: Application) throws {
     try app.register(collection: SearchApiController())
     try app.register(collection: EmotionController())
     try app.register(collection: SocketController())
+    try app.register(collection: RawRequestController())
     
     //web
     try app.register(collection: PostViewController())

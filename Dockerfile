@@ -10,7 +10,7 @@ RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true \
     && rm -rf /var/lib/apt/lists/*
 
 #RUN apt-get update && apt-get install -y sSMTP
-COPY ssmtp.config /etc/ssmtp/ssmtp.conf
+#COPY ssmtp.config /etc/ssmtp/ssmtp.conf
 
 # Set up a build area
 WORKDIR /build
