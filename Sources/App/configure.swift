@@ -35,7 +35,7 @@ public func configure(_ app: Application) throws {
     
     migrations(app)
     
-    app.logger.logLevel = .error
+    app.logger.logLevel = .debug
    
     //try app.autoRevert().wait()
     try app.autoMigrate().wait()

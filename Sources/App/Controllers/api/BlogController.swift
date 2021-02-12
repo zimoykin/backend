@@ -47,7 +47,7 @@ struct BlogController: RouteCollection {
     
     func indexSimple (_ req: Request) throws -> EventLoopFuture<Page<String>> {
         
-        try req.auth.require(UserModel.self)
+        //try req.auth.require(UserModel.self)
         
         return BlogModel.query(on: req.db)
             .field(\.$id)
@@ -102,7 +102,7 @@ struct BlogController: RouteCollection {
     
     func blog (_ req: Request) throws -> EventLoopFuture<BlogModel.Output> {
         
-        try req.auth.require(UserModel.self)
+        //try req.auth.require(UserModel.self)
         
         guard let blogid = getBlogIDQuery(req)
         else { return req.eventLoop.makeFailedFuture(Abort(.badRequest)) }
