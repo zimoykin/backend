@@ -32,6 +32,8 @@ services:
     build:
       context: .
     restart: always
+    environment:
+      <<: *shared_environment
     env_file: 
       - .env
     depends_on:
