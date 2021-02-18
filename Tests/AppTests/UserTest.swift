@@ -2,17 +2,10 @@
 @testable import App
 import XCTVapor
 
-final class AppTests: XCTestCase {
-    
-    func configureTest() throws {
-        
-        let app = Application(.testing)
-        defer { app.shutdown() }
-        try configure(app)
-        
-    }
+final class UserTests: XCTestCase {
     
     func userTest () throws {
+        print("user test")
         let app = Application(.testing)
         defer { app.shutdown() }
         try configure(app)

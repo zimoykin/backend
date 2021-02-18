@@ -80,5 +80,3 @@ fileprivate func createdirectory (_ pathFolder: String) {
         }
 
 }
-
-
