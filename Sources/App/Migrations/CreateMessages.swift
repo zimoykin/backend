@@ -16,21 +16,43 @@ struct CreateMessages: Migration {
                 let database = database as! SQLDatabase
                 return database.raw("""
 
-                          CREATE OR REPLACE FUNCTION public.updatecount ()
-                              RETURNS TRIGGER
-                              LANGUAGE plpgsql
-                              AS $function$
-                          BEGIN UPDATE posts
-                              SET ranking = OLD.ranking + 1;
-                              RETURN NEW;
-                          END;
-                          $function$;
-                                                    
+                            CREATE OR REPLACE FUNCTION public.updatecount ()
+                                RETURNS TRIGGER
+                                LANGUAGE plpgsql
+                                AS $function$
+                            BEGIN
+                               UPDATE
+                                   posts
+                               SET
+                                   ranking = (
+                                       SELECT
+                                           SUM(
+                                               CASE WHEN emotions.emotion = 'like' THEN
+                                                   2
+                                               WHEN emotions.emotion = 'dislike' THEN
+                                                   1
+                                               ELSE
+                                                   0
+                                               END)
+                                       FROM
+                                           emotions
+                                       WHERE
+                                           emotions.blog_id = posts.id) + (
+                                           SELECT
+                                               COUNT(messages.id)
+                                           FROM
+                                               messages
+                                           WHERE
+                                               messages.blog_id = posts.id);
+                                RETURN NEW;
+                            END;
+                            $function$
+                                                                                
                     """).run().map{
                         database.raw("""
 
                             CREATE TRIGGER updatemessages
-                            AFTER UPDATE ON messages
+                            AFTER UPDATE OR INSERT OR DELETE ON messages
                             FOR EACH ROW
                             EXECUTE PROCEDURE updatecount ();
                                                     
