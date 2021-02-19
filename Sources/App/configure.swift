@@ -18,6 +18,7 @@ fileprivate func migrations(_ app: Application) {
     app.migrations.add(CreateToken())
     app.migrations.add(CreateEmotions())
     app.migrations.add(CreateMessages())
+    app.migrations.add(CreateTriggers())
 }
 
 public func configure(_ app: Application) throws {

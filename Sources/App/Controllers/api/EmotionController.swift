@@ -35,23 +35,27 @@ struct EmotionController: RouteCollection {
     
     public func getBlogScore (blogid: UUID, from req: Request) -> EventLoopFuture<HTTPStatus> {
         
-        return BlogModel.query(on: req.db)
-            .filter(\.$id == blogid)
-            .first()
-            .unwrap(or: Abort(.notFound))
-            .flatMap { blog -> EventLoopFuture<HTTPStatus> in
-                var blogRanking = 0
-                return blog.$emotions.get(on: req.db).mapEachCompact {
-                    $0.emotion == .like ? 2 : $0.emotion == .dislike ? 1 : 0
-                }.mapEach{
-                    blogRanking += $0
-                }.flatMap { _ -> EventLoopFuture<HTTPStatus> in
-                    blog.ranking = blogRanking
-                    return blog.save(on: req.db).transform(to: .ok)
-                }
-            }
+        return req.eventLoop.makeSucceededFuture(.ok)
         
+        //old code
+//        return BlogModel.query(on: req.db)
+//            .filter(\.$id == blogid)
+//            .first()
+//            .unwrap(or: Abort(.notFound))
+//            .flatMap { blog -> EventLoopFuture<HTTPStatus> in
+//                var blogRanking = 0
+//                return blog.$emotions.get(on: req.db).mapEachCompact {
+//                    $0.emotion == .like ? 2 : $0.emotion == .dislike ? 1 : 0
+//                }.mapEach{
+//                    blogRanking += $0
+//                }.flatMap { _ -> EventLoopFuture<HTTPStatus> in
+//                    blog.ranking = blogRanking
+//                    return blog.save(on: req.db).transform(to: .ok)
+//                }
+//            }
+//
     }
+    
     func delete (req: Request) throws -> EventLoopFuture<HTTPStatus> {
         
         guard let user = req.auth.get(UserModel.self)
