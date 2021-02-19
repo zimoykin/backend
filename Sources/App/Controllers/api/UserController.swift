@@ -89,9 +89,13 @@ struct UserController: RouteCollection {
         //.with(\.$place, { $0.with (\.$post, {$0.with(\.$tags)})})
         return UserModel.query(on: req.db)
             .filter(\.$id == id)
-            .with(\.$bids, { $0.with(\.$user)})
-            .with(\.$blogs, { $0.with(\.$emotions, { $0.with(\.$blog).with(\.$user)}).with(\.$messages)
-                .with(\.$place, {$0.with(\.$country)})
+            .with(\.$bids,
+                  { $0.with(\.$user)})
+            .with(\.$blogs,
+                  { $0.with(\.$emotions,
+                            { $0.with(\.$blog).with(\.$user)}).with(\.$messages, {$0.with(\.$user)})
+                .with(\.$place,
+                      {$0.with(\.$country)})
                 .with(\.$user)
                 .with(\.$bids)
                 .with(\.$tags)
