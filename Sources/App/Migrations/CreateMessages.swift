@@ -50,19 +50,46 @@ struct CreateMessages: Migration {
                                                                                 
                     """).run().map{
                         database.raw("""
-
+                    
                             CREATE TRIGGER updatemessages
                             AFTER UPDATE OR INSERT OR DELETE ON messages
                             FOR EACH ROW
                             EXECUTE PROCEDURE updatecount ();
                                                     
-                    """).run()
+                    """).run().map{
+                        database.raw("""
+                          
+                            CREATE TRIGGER updateRanking
+                            AFTER UPDATE OR INSERT OR DELETE ON emotions
+                            FOR EACH ROW
+                            EXECUTE PROCEDURE updatecount ();
+                                                    
+                    """).run()}
                     }.transform(to: ())
             })
         
     }
     
     func revert(on database: Database) -> EventLoopFuture<Void> {
-        return database.schema(MessageModel.schema).delete()
+        return database.schema(MessageModel.schema).delete().flatMap({
+            let database = database as! SQLDatabase
+            return database.raw("""
+
+                            DROP TRIGGER IF EXISTS updateRanking ON emotions;
+                            DROP TRIGGER IF EXISTS updatemessages ON messages;
+                                                                    
+                """)
+                .run()
+                .transform(to: ())
+        })
     }
 }
+
+// check triggers
+//SELECT
+//    trigger_schema,
+//    trigger_name
+//FROM
+//    information_schema.triggers
+//
+//

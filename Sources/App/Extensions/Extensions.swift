@@ -41,7 +41,7 @@ extension QueryBuilder {
         
         return model.with(\.$tags)
             .with(\.$user)
-            .with(\.$messages)
+            .with(\.$messages, {$0.with(\.$user).with(\.$toUser).with(\.$blog)})
             .with(\.$emotions, { $0.with(\.$blog).with(\.$user)} )
             .with(\.$place, {$0.with(\.$country)})
             .with(\.$bids) as! Self
