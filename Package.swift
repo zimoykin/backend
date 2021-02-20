@@ -13,7 +13,8 @@ let package = Package(
         .package(url: "https://github.com/vapor/leaf.git", from: "4.0.0"),
         .package(url: "https://github.com/vapor/jwt.git", from: "4.0.0"),
         .package(url: "https://github.com/vapor/fluent-postgres-driver.git", from: "2.1.2"),
-        .package(url: "https://github.com/autimatisering/VaporSMTPKit.git", from: "1.0.0")
+        .package(url: "https://github.com/autimatisering/VaporSMTPKit.git", from: "1.0.0"),
+        .package(url: "https://github.com/vapor/fluent-mongo-driver.git", from: "1.0.0"),
 
     ],
     targets: [
@@ -26,6 +27,7 @@ let package = Package(
                 .product(name: "Leaf", package: "leaf"),
                 .product(name: "VaporSMTPKit", package: "VaporSMTPKit"),
                 .product(name: "Vapor", package: "vapor"),
+                .product(name: "FluentMongoDriver", package: "fluent-mongo-driver")
             ],
             swiftSettings: [
                 // Enable better optimizations when building in Release configuration. Despite the use of

@@ -23,6 +23,7 @@ func routes(_ app: Application) throws {
     try app.register(collection: EmotionController())
     try app.register(collection: SocketController())
     try app.register(collection: RawRequestController())
+    try app.register(collection: UserActivityController())
     
     //web
     try app.register(collection: PostViewController())

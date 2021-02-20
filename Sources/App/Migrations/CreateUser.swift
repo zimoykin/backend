@@ -22,3 +22,21 @@ struct CreateUser: Migration {
         return database.schema(UserModel.schema).delete()
     }
 }
+
+
+struct CreateUserActivity: Migration {
+    func revert(on database: Database) -> EventLoopFuture<Void> {
+        return database.schema(UserActivity.schema).delete()
+    }
+    
+    func prepare(on database: Database) -> EventLoopFuture<Void> {
+        return database.schema(UserActivity.schema)
+            .id()
+            .field("user_id", .uuid, .required)
+            .field("type", .string, .required)
+            .field("created_at", .datetime)
+            .field("ip_address", .string)
+            .create()
+    }
+    
+}

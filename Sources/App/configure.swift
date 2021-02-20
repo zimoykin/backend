@@ -1,24 +1,26 @@
 import Fluent
 import FluentPostgresDriver
+import FluentMongoDriver
 import Vapor
 import Leaf
 import JWT
 
 // configures your application
 fileprivate func migrations(_ app: Application) {
-    app.migrations.add(CreateEnums())
-    app.migrations.add(CreateUser())
-    app.migrations.add(CreateTodo())
-    app.migrations.add(CreateCountry())
-    app.migrations.add(CreatePlace())
-    app.migrations.add(CreatePost())
-    app.migrations.add(CreateTag())
-    app.migrations.add(CreatePostTag())
-    app.migrations.add(CreateBid())
-    app.migrations.add(CreateToken())
-    app.migrations.add(CreateEmotions())
-    app.migrations.add(CreateMessages())
-    app.migrations.add(CreateTriggers())
+    app.migrations.add(CreateEnums(), to: .psql)
+    app.migrations.add(CreateUser(), to: .psql)
+    app.migrations.add(CreateTodo(), to: .psql)
+    app.migrations.add(CreateCountry(), to: .psql)
+    app.migrations.add(CreatePlace(), to: .psql)
+    app.migrations.add(CreatePost(), to: .psql)
+    app.migrations.add(CreateTag(), to: .psql)
+    app.migrations.add(CreatePostTag(), to: .psql)
+    app.migrations.add(CreateBid(), to: .psql)
+    app.migrations.add(CreateToken(), to: .psql)
+    app.migrations.add(CreateEmotions(), to: .psql)
+    app.migrations.add(CreateMessages(), to: .psql)
+    app.migrations.add(CreateTriggers(), to: .psql)
+    app.migrations.add(CreateUserActivity(), to: .mongo)
 }
 
 public func configure(_ app: Application) throws {
@@ -33,6 +35,10 @@ public func configure(_ app: Application) throws {
         password: Environment.get("DATABASE_PASSWORD")!,
         database: Environment.get("DATABASE_NAME")!
     ), as: .psql)
+    
+    try! app.databases.use(.mongo(
+        connectionString: "mongodb://localhost:27017/VAPOR"
+    ), as: .mongo)
     
     migrations(app)
     
