@@ -1,12 +1,17 @@
+
 # ================================
 # Build image
 # ================================
 FROM swift:latest as build
 
-RUN apt-get update && apt-get install -y openssh-client
+# Install OS updates and, if needed, sqlite3
+RUN export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true \
+    && apt-get -q update \
+    && apt-get -q dist-upgrade -y \
+    && rm -rf /var/lib/apt/lists/*
 
 #RUN apt-get update && apt-get install -y sSMTP
-#COPY ssmtp.config /etc/ssmtp/ssmtp.conf
+COPY ssmtp.config /etc/ssmtp/ssmtp.conf
 
 # Set up a build area
 WORKDIR /build
@@ -34,7 +39,7 @@ RUN cp "$(swift build --package-path /build -c release --show-bin-path)/Run" ./
 
 # Uncomment the next line if you need to load resources from the `Public` directory.
 # Ensure that by default, neither the directory nor any of its contents are writable.
-#RUN mv /build/Public ./Public 
+RUN mv /build/Public ./Public
 #&& chmod -R a-w ./Public
 
 # ================================

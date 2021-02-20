@@ -23,14 +23,20 @@
         let image: String
         
         init (_ user: UserModel, req: Request) throws {
-            
+                        
             self.username = user.username
             self.id = user.id!
             self.accessToken = try user.createToken(req.application, isAccess: true)
-            self.refreshToken = try user.createToken(req.application, isAccess: false)
+            let refreshToken = try user.createToken(req.application, isAccess: false)
+            self.refreshToken = refreshToken
             self.image = user.getSourceImage()
             
-            _ = RefreshToken(user.id!, token: self.refreshToken).save(on: req.db)
+            _ = RefreshToken.query(on: req.db)
+                .filter(\.$user.$id == user.id!)
+                .delete(force: true).map({
+                    return RefreshToken(user.id!, token: refreshToken).save(on: req.db)
+                })
+            
             
         }
     }
