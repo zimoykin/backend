@@ -104,9 +104,9 @@ struct UserViewController: RouteCollection {
     fileprivate func create(req: Request) throws -> EventLoopFuture<Response> {
         
         let promise = req.eventLoop.makePromise(of: Response.self)
-        try UserSignup.validate(content: req)
+        try UserCredentials.validate(content: req)
         
-        let userSignup = try? req.content.decode(UserSignup.self)
+        let userSignup = try? req.content.decode(UserCredentials.self)
         
         if let userSignUpd = userSignup {
             
