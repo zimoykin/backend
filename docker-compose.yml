@@ -1,7 +1,8 @@
 version: '3.7'
 
 volumes:
-  db_data:  
+  db_data:
+  mongodata:
 
 x-shared_environment: &shared_environment
   LOG_LEVEL: ${LOG_LEVEL:-debug}
@@ -12,14 +13,11 @@ x-shared_environment: &shared_environment
 
 services:
   app:
-    image: travel_bids:latest
+    image: backend:latest
     build:
       context: .
-    restart: always
     environment:
       <<: *shared_environment
-    env_file: 
-      - .env
     depends_on:
       - db
       - mongo
@@ -29,7 +27,7 @@ services:
     command: ["serve", "--env", "production", "--hostname", "0.0.0.0", "--port", "8000"]
     
   migrate:
-    image: travel_bids:latest
+    image: backend:latest
     build:
       context: .
     env_file: 
@@ -41,7 +39,7 @@ services:
       replicas: 0
       
   revert:
-    image: travel_bids:latest
+    image: backend:latest
     build:
       context: .
     env_file: 
@@ -65,14 +63,14 @@ services:
       - '5432:5432'
         
   mongo:
-    image: mongo
+    image: mongo:latest
         #restart: always
     volumes:
-        - db_data:/var/lib/mongo/data/mongodata
+        - mongodata:/data/mongodata
     container_name: mongodb
     environment:
-        #MONGO_INITDB_ROOT_USERNAME: VAPOR
-        #MONGO_INITDB_ROOT_PASSWORD: VAPOR
-        MONGO_INITDB_DATABASE: VAPOR
+        MONGO_INITDB_ROOT_USERNAME: user
+        MONGO_INITDB_ROOT_PASSWORD: pass
+        MONGO_INITDB_DATABASE: db
     ports:
         - '27017:27017'

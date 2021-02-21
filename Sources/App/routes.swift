@@ -26,11 +26,7 @@ func routes(_ app: Application) throws {
     try app.register(collection: UserActivityController())
     
     //web
-    try app.register(collection: PostViewController())
-    try app.register(collection: SearchViewController())
-    try app.register(collection: PlaceViewController())
-    try app.register(collection: CountryViewController())
-    try app.register(collection: UserViewController())
+    //try app.register(collection: UserViewController())
     
     let protected = app.grouped(UserSessionAuthenticator())
     

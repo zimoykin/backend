@@ -39,8 +39,8 @@ public func configure(_ app: Application) throws {
         database: Environment.get("DATABASE_NAME")!
     ), as: .psql)
     
-    try? app.databases.use(.mongo(
-        connectionString: "mongodb://\(Environment.get("DATABASE_HOST")!):27017/VAPOR"
+    try! app.databases.use(.mongo(
+        connectionString: "mongodb://user:pass@localhost:27017/db"
     ), as: .mongo)
     
     
@@ -53,10 +53,6 @@ public func configure(_ app: Application) throws {
     app.views.use(.leaf)
     app.leaf.cache.isEnabled = app.environment.isRelease
     
-    app.leaf.tags[YearTag.name] = YearTag()
-    app.leaf.tags[DeleteImageTag.name] = DeleteImageTag(app: app)
-    app.leaf.tags[EditImageTag.name] = EditImageTag(app: app)
-
     app.http.server.configuration.hostname = K.server_address
     app.http.server.configuration.port = K.server_port
 
