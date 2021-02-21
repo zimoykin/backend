@@ -2,7 +2,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "travel_bids",
+    name: "backend",
     platforms: [
        .macOS(.v10_15)
     ],

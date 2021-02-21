@@ -20,14 +20,21 @@ fileprivate func migrations(_ app: Application) {
     app.migrations.add(CreateEmotions(), to: .psql)
     app.migrations.add(CreateMessages(), to: .psql)
     app.migrations.add(CreateTriggers(), to: .psql)
-    app.migrations.add(CreateUserActivity(), to: .mongo)
+    //app.migrations.add(CreateUserActivity(), to: .mongo)
 }
 
 public func configure(_ app: Application) throws {
+    
+    app.logger.logLevel = .debug
+    
     // uncomment to serve files from /Public folder
     app.middleware.use(FileMiddleware(publicDirectory: app.directory.publicDirectory))
     app.middleware.use(CORSMiddleware(configuration: .default()))
     app.middleware.use(CorrectAddressMiddleware())
+    
+    try? app.databases.use(.mongo(
+        connectionString: "mongodb://\(Environment.get("DATABASE_HOST")!):27017/VAPOR"
+    ), as: .mongo)
     
     app.databases.use(.postgres(
         hostname: Environment.get("DATABASE_HOST")!,
@@ -36,13 +43,7 @@ public func configure(_ app: Application) throws {
         database: Environment.get("DATABASE_NAME")!
     ), as: .psql)
     
-    try! app.databases.use(.mongo(
-        connectionString: "mongodb://localhost:27017/VAPOR"
-    ), as: .mongo)
-    
     migrations(app)
-    
-    app.logger.logLevel = .debug
    
     //try app.autoRevert().wait()
     try app.autoMigrate().wait()
