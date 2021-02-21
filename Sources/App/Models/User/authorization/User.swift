@@ -5,59 +5,6 @@
   
   final class UserModel: Model {
     
-    struct Public: Content {
-        let username: String
-        let id: UUID
-        let createdAt: Date?
-        let updatedAt: Date?
-        var email: String
-        let image: String
-    }
-    
-    struct OutputLogin: Content {
-        
-        let username: String
-        let id: UUID
-        let accessToken: String
-        let refreshToken: String
-        let image: String
-        
-        init (_ user: UserModel, req: Request) throws {
-                        
-            self.username = user.username
-            self.id = user.id!
-            self.accessToken = try user.createToken(req.application, isAccess: true)
-            let refreshToken = try user.createToken(req.application, isAccess: false)
-            self.refreshToken = refreshToken
-            self.image = user.getSourceImage()
-            
-            _ = RefreshToken.query(on: req.db)
-                .filter(\.$user.$id == user.id!)
-                .delete(force: true).map({
-                    return RefreshToken(user.id!, token: refreshToken).save(on: req.db)
-                })
-            
-            
-        }
-    }
-    
-    struct FullOutput: Content {
-        let username: String
-        var image: String
-        let id: UUID
-        let createdAt: Date?
-        var email: String
-        var blogs: [BlogModel.Output]
-        init (user: UserModel) {
-            self.username = user.username
-            self.id = user.id!
-            self.createdAt = user.createdAt
-            self.email = user.email
-            self.blogs = user.blogs.map { BlogModel.Output($0) }
-            self.image = user.getSourceImage()
-        }
-    }
-    
     static let schema = "users"
     
     @ID(key: "id")
@@ -97,7 +44,7 @@
   
   extension UserModel {
     
-    static func create(from userSignup: UserSignup) throws -> UserModel {
+    static func create(from userSignup: UserCredentials) throws -> UserModel {
         UserModel(username: userSignup.username,
                   passwordHash: try Bcrypt.hash(userSignup.password),
                   email: userSignup.email)
@@ -154,7 +101,7 @@
     
     func authenticate(jwt: UserPayload, for request: Request) -> EventLoopFuture<Void> {
         try! jwt.verify(using: request.application.jwt.signers.get()!)
-        return  UserModel.find(jwt.id, on: request.db)
+        return  UserModel.find(jwt.id, on: request.db(.psql))
             .unwrap(or: Abort(.notFound))
             .map {
                 return request.auth.login($0)
@@ -163,21 +110,3 @@
     
   }
   
-  struct UserLogin: Content {
-    let login: String
-    let password: String
-  }
-  
-  
-  struct UserSignup: Content, Validatable{
-    
-    let username: String
-    let email: String
-    let password: String
-    
-    static func validations(_ validations: inout Validations) {
-        validations.add("username", as: String.self, is: !.empty)
-        validations.add("password", as: String.self, is: .count(5...))
-        validations.add("email", as: String.self, is: .email)
-    }
-  }

@@ -150,7 +150,7 @@ struct UserController: RouteCollection {
     fileprivate func create(req: Request) throws -> EventLoopFuture<HTTPStatus> {
         
         guard let data = req.body.data,
-              let userSignup = try? JSONDecoder().decode(UserSignup.self, from: data)
+              let userSignup = try? JSONDecoder().decode(UserCredentials.self, from: data)
         else { throw Abort (.badRequest) }
         
         guard let user = try? UserModel.create(from: userSignup)

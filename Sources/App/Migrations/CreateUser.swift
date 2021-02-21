@@ -1,4 +1,5 @@
 import Fluent
+import Vapor
 
 struct CreateUser: Migration {
     func prepare(on database: Database) -> EventLoopFuture<Void> {
@@ -12,7 +13,9 @@ struct CreateUser: Migration {
             .field("created_at",     .datetime)
             .field("updated_at",     .datetime)
             .create().flatMap {
-                let admin = try! UserModel.create(from: UserSignup(username: "admin", email: "admin@goverment.com", password: "@dmin"))
+                let admin = try! UserModel.create(from: UserCredentials(username: Environment.get("ADMIN_USERNAME")!,
+                                                                   email: Environment.get("ADMIN_EMAIL")!,
+                                                                   password: Environment.get("ADMIN_PASSWORD")!))
                 admin.confirmed = true
                 return admin.save(on: database)
             }
